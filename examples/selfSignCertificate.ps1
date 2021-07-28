@@ -8,7 +8,7 @@ if ( -not $certificateSubject -or $certificateSubject.IndexOfAny($invalidCharact
     return
 }
 
-# Generate a self-signed Authenticode certificate in the local computer's personal certificate store.
+# Generate a self-signed Authenticode certificate in the current users's personal certificate store.
 $CertParams = @{    
     Subject           = "CN=$certificateSubject"
     Type              = "CodeSigningCert"    
@@ -37,5 +37,5 @@ $publisherCertificateStore.Close()
 Write-Host "Added certificate to Cert:\LocalMachine\TrustedPublisher.."
 
 # This certificate can then be used to sign a PowerShell script like in the example below.
-# $codeCertificate = Get-ChildItem Cert:\LocalMachine\My | Where-Object {$_.Subject -eq "CN=certificateSubject"}
+# $codeCertificate = Get-ChildItem Cert:\CurrentUser\My | Where-Object {$_.Subject -eq "CN=certificateSubject"}
 # Set-AuthenticodeSignature -FilePath "$PWD\myscript.ps1" -Certificate $codeCertificate -TimeStampServer *<http://timestamp.digicert.com>*
